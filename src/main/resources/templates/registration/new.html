@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Registrations</title>
+<link rel="stylesheet" th:href="@{/css/bootstrap.min.css}">
+</head>
+<header th:insert="fragment/menu.html :: menu"> </header>
+<body>
+<br>
+	<div class="container">
+		<form th:action="@{/app/registration/new}" method="post">
+			<div class="card">
+				<div class="card-header">New registration</div>
+				<div class="form-group row">
+					<label for="date" class="col-form-label col-sm-2">Date</label>
+					<div class="col-sm-4">
+						<input type="date" id="date" name="date" class="form-control">
+					</div>
+					<div th:if="${error!= null && error.containsKey('date')}"
+						th:text="${error.get('date')}" class="alert alert-danger"></div>
+				</div>
+				<div class="form-group row">
+					<label for="studentId" class="col-form-label col-sm-2">Student</label>
+					<div class="col-sm-4">
+						<select class="form-select" id="studentId" name="studentId">
+							<option value="" selected>-Select one-</option>
+							<option th:each="op : ${studentList}"
+								th:value="${op.studentId}" th:label="${op.firstName} +' '+ ${op.lastName}"></option>
+						</select> 
+					</div>
+					<div th:if="${error!= null && error.containsKey('studentId')}"
+						th:text="${error.get('studentId')}" class="alert alert-danger"></div>
+				</div>
+				<div class="form-group row">
+					<label for="classCode" class="col-form-label col-sm-2">Class</label>
+					<div class="col-sm-4">
+						<select class="form-select" id="classCode" name="classCode">
+						<option value="" selected>-Select one-</option>
+							<option th:each="op : ${classList}"
+								th:value="${op.code}" th:label="${op.title}"></option>
+						</select> 
+					</div>
+					<div th:if="${error!= null && error.containsKey('classCode')}"
+						th:text="${error.get('classCode')}" class="alert alert-danger"></div>
+				</div>
+				<div class="form-group row">
+					<label for="score" class="col-form-label col-sm-2">Score to
+						pass</label>
+					<div class="col-sm-4">
+						<input type="number" id="score" name="score" class="form-control">
+					</div>
+					<div th:if="${error!= null && error.containsKey('score')}"
+						th:text="${error.get('score')}" class="alert alert-danger"></div>
+				</div>
+			</div>
+			<div class="card-footer">
+				<input type="submit" value="Create" class="btn btn-primary">
+				<a href="/app/student/list" class="btn btn-danger">Back to list</a>
+			</div>
+		</form>
+	</div>
+</body>
+</html>

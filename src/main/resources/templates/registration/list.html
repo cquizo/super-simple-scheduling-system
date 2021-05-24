@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Registrations</title>
+<link rel="stylesheet" th:href="@{/css/bootstrap.min.css}">
+</head>
+<header th:insert="fragment/menu.html :: menu"> </header>
+<body>
+	<br>
+	<div class="container">
+		<div class="card">
+			<div class="card-body">List of Registrations</div>
+		</div>
+		<form th:action="@{/app/registration/list}"
+			th:object="${registration}" class="row gx-3 gy-2 align-items-center"
+			method="post">
+			<div class="col-sm-3">
+				<label for="description">Student</label> <select class="form-select"
+					id="studentId" name="studentId" th:field="*{studentId}">
+					<option value="" selected>-All-</option>
+					<option th:each="op : ${studentList}" th:value="${op.studentId}"
+						th:label="${op.firstName} +' '+ ${op.lastName}"></option>
+				</select>
+			</div>
+			<div class="col-sm-3">
+				<label for="title">Class</label> <select class="form-select"
+					id="classCode" name="classCode" th:field="*{classCode}">
+					<option value="" selected>-All-</option>
+					<option th:each="op : ${classList}" th:value="${op.code}"
+						th:label="${op.title}"></option>
+				</select>
+			</div>
+			<div class="col-sm-3">
+				<input type="submit" value="Filter" class="btn btn-primary">
+				<a href="/app/registration/list" class="btn btn-danger">Reset</a>
+			</div>
+		</form>
+		<a href="/app/registration/new" class="btn btn-success">Add new</a>
+		<table class="table table-striped table-hover">
+			<thead class="table-dark">
+				<tr>
+					<th>Options</th>
+					<th>Id</th>
+					<th>Date</th>
+					<th>Student</th>
+					<th>Class</th>
+					<th>Score to pass</th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr th:each="row: ${list}">
+					<td style="width: 15em"><a
+						th:href="@{/app/registration/edit/{id}(id=${row.registrationId})}"
+						class="badge rounded-pill bg-light text-dark">Edit</a> <a
+						th:href="@{/app/registration/info/{id}(id=${row.registrationId})}"
+						class="badge rounded-pill bg-light text-dark">Info</a> <a
+						th:href="@{/app/registration/delete/{id}(id=${row.registrationId})}"
+						class="badge rounded-pill bg-light text-dark">Remove</a></td>
+					<td th:text="${row.registrationId}"></td>
+					<td th:text="${row.date}"></td>
+					<td th:text="${row.studentName}"></td>
+					<td th:text="${row.classTitle}"></td>
+					<td th:text="${row.score}"></td>
+				</tr>
+			</tbody>
+		</table>
+		<div th:if="${list==null || list.isEmpty()}">No items to show</div>
+	</div>
+</body>
+</html>
